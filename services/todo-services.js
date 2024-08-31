@@ -159,7 +159,29 @@ const todoServices = {
       })
       .catch(err => cb(err))
   },
-  deleteTodo: (req, cb) => cb(null, { messages: '功能開發中' })
+  deleteTodo: (req, cb) => {
+    // 從路由變數拿取 id
+    const todoId = Number(req.params.id)
+
+    // 操作 model 查詢資料庫
+    return Todo.findByPk(todoId)
+      .then(todo => {
+      // todo = null // 錯誤測試: 預期會出現以下訊息:
+        if (!todo) {
+          const error = new Error('Todo not found!')
+          error.status = 404
+          throw error
+        }
+
+        // 使用 sequelize 方法刪除資料
+        return todo.destroy()
+      })
+      .then(deletedTodo => {
+        const data = { todo: deletedTodo }
+        return cb(null, data)
+      })
+      .catch(err => cb(err))
+  }
 }
 
 module.exports = todoServices
