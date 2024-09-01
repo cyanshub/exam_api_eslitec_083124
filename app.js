@@ -7,6 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express')
 const methodOverride = require('method-override')
 const { apis } = require('./routes')
+const cors = require('cors')
 
 // 設定應用程式
 const app = express()
@@ -16,6 +17,9 @@ const port = process.env.PORT || 3000
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(methodOverride('_method'))
+
+// 設計 middleware: 應對瀏覽器 CORS (Cross-Origin Resource Sharing) 政策
+app.use(cors()) // 自動回應帶有 Access-Control-Allow-Origin 標頭
 
 // 設計路由
 app.use('/api', apis)
