@@ -181,6 +181,38 @@ const todoServices = {
         return cb(null, data)
       })
       .catch(err => cb(err))
+  },
+  toggleTodoCompleted: (req, cb) => {
+    // 從路由變數拿取 id
+    const todoId = Number(req.params.id)
+
+    // 操作 model 查詢資料庫
+    return Todo.findByPk(todoId)
+      .then(todo => {
+      // todo = null // 錯誤測試: 預期會出現以下訊息:
+        if (!todo) {
+          const error = new Error('Todo not found!')
+          error.status = 404
+          throw error
+        }
+
+        // 使用 sequelize 方法更新資料
+        return todo.update({
+          isCompleted: !todo.isCompleted
+        })
+      })
+      .then(patchedTodo => {
+        // patchedTodo = null // 錯誤測試: 預期會出現以下訊息:
+        if (!patchedTodo) {
+          const error = new Error('Todo not found!')
+          error.status = 404
+          throw error
+        }
+
+        const data = { todo: patchedTodo }
+        return cb(null, data)
+      })
+      .catch(err => cb(err))
   }
 }
 

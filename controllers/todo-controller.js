@@ -14,6 +14,9 @@ const todoController = {
   },
   deleteTodo: (req, res, next) => {
     return todoServices.deleteTodo(req, (err, data) => err ? next(err) : res.json({ status: 200, data }))
+  },
+  toggleTodoCompleted: (req, res, next) => {
+    return todoServices.toggleTodoCompleted(req, (err, data) => err ? next(err) : res.json({ status: 200, data }))
   }
 }
 

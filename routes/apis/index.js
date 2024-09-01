@@ -12,6 +12,7 @@ router.get('/todos', todoController.getTodos)
 router.post('/todos', todoController.postTodo)
 router.patch('/todos/:id', todoController.patchTodo)
 router.delete('/todos/:id', todoController.deleteTodo)
+router.patch('/todos/:id/toggleTodoCompleted', todoController.toggleTodoCompleted)
 
 // 設計路由: 錯誤處理
 router.use('/', apiErrorHandler)
