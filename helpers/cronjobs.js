@@ -30,7 +30,7 @@ const countTasks = async () => {
 const scheduleCronjob = () => {
   // 設定 cronjob: 每天凌晨 0 點（UTC+8）執行
   // 利用 cron 表達式設定任務執行時間, 用 5 個字段指定任務執行時間
-  const cronExp = process.env.CRON_EXP
+  const cronExp = process.env.CRON_EXP || '0 0 * * *'
 
   cron.schedule(cronExp, async () => {
     // 執行計算任務數量的 function
@@ -44,8 +44,8 @@ const scheduleCronjob = () => {
     const reportDate = now.toISOString().slice(0, 10).replace(/-/g, '/')
 
     // 建立 email 基本資訊
-    const emailFrom = process.env.GMAIL_USER
-    const emailTo = process.env.GMAIL_TO
+    const emailFrom = process.env.GMAIL_USER || 'travel15740@gmail.com'
+    const emailTo = process.env.GMAIL_TO || 'eslitec.test.app@gmail.com'
     const emailSubject = 'Task Count Report'
     const emailText = `Date: ${reportDate}\nTasks: ${tasksCount}\n\nNote: Examples are not included.`
 
@@ -61,8 +61,8 @@ const scheduleCronjob = () => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS
+        user: process.env.GMAIL_USER || 'travel15740@gmail.com',
+        pass: process.env.GMAIL_PASS || 'soshdlomyigmrnkc'
       }
     })
 
